@@ -1,45 +1,49 @@
 import pygame
-from pynput import keyboard
+from src.keyboard_listener import KeyboardListener
+from src.mouse_tracker import MouseTracker
+
+
+#TODO Mouse tracking position convertion
 
 
 pygame.init()
-TestWindow = pygame.display.set_mode( ( 400, 400 ) )
-pygame.display.set_caption( "Hello world" )
-
-idle_img = pygame.image.load( 'test/test_dog.png' )
-hit_img = pygame.image.load( 'test/hit.png' )
-
-current_img = idle_img
-pressed_key = set()
-
-def on_press( key ):
-    pressed_key.add( key )
-
-def on_release( key):
-    pressed_key.discard( key )
 
 
-listener = keyboard.Listener( on_press=on_press, on_release=on_release )
-listener.start()
-
+KListener = KeyboardListener()
+#MTracker = MouseTracker()
 clock = pygame.time.Clock()
 
+
+icon = pygame.image.load( 'test/icon.png' )
+pygame.display.set_icon( icon )
+window = pygame.display.set_mode( ( 400, 400 ) )
+pygame.display.set_caption( "SMASH the keyboard dog!" )
+
+
+idle_img = pygame.image.load( 'test/dog_idle.png' )
+hit_img = pygame.image.load( 'test/dog_hit.png' )
+current_img = idle_img
+
+
 state = True
+KListener.start()
+#MTracker.start()
 while state:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             state = False
 
-    if pressed_key:
+    if KListener.pressed_key:
         current_img = hit_img
         
     else:
         current_img = idle_img
 
-    TestWindow.fill( ( 255, 255, 255 ) )
-    TestWindow.blit( current_img, ( 0, 0 ) )
+    window.fill( ( 54, 159, 50 ) )
+    window.blit( current_img, ( 0, 0 ) )
     pygame.display.flip()
     clock.tick( 60 )
 
-listener.stop()
+KListener.stop()
+#MTracker.stop()
 pygame.quit()
