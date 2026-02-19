@@ -2,17 +2,23 @@ from pynput import mouse
 
 
 class MouseTracker:
-    def __init__( self ):
-        self.mpos = [ 0, 0 ]
-        self.listener = mouse.Listener( on_move=self.on_move)
+    def __init__(self):
+        self.posx = 0
+        self.posy = 0
+        self.listener = mouse.Listener(on_move=self.on_move)
+    
+    def on_move(self,_x,_y):
+        self.posx = _x
+        self.posy = _y
 
-    def on_move( self, x, y ):
-        self.mpos[ 0 ] = x
-        self.mpos[ 1 ] = y
-
-    def start( self ):
+    def start(self):
         self.listener.start()
 
-    def stop( self ):
+    def stop(self):
         self.listener.stop()
-        
+
+    def getx(self):
+        return self.posx
+    
+    def gety(self):
+        return self.posy
